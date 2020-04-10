@@ -1,3 +1,4 @@
+import java.io.Serializable;
 
 /**
  * Author: Justin Girgis and Serenity Brown
@@ -6,7 +7,7 @@
  * Date: 3/27/2020
  */
 
-public class PersonMemento {
+public class PersonMemento implements Serializable {
     private Person person;
 
 
@@ -14,6 +15,7 @@ public class PersonMemento {
         this.person = person;
     }
     public Person getSavedPerson(){
+        //getSavedPerson(person);
         return this.person;
     }
 }

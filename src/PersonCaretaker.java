@@ -46,6 +46,7 @@ public class PersonCaretaker implements Serializable {
 
    public PersonMemento getMemento() throws IOException, ClassNotFoundException {
 
+       ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(fileName));
         //try and catch to know when cursor is at the end of file
         PersonMemento find = null;
         PersonMemento temp = (PersonMemento) objectInputStream.readObject();
@@ -67,7 +68,7 @@ public class PersonCaretaker implements Serializable {
                 e.getMessage();
             }
 
-        ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(fileName));
+        objectInputStream = new ObjectInputStream(new FileInputStream(fileName));
         //objectInputStream.close();
         return temp;
     }

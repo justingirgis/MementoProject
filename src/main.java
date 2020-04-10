@@ -10,27 +10,57 @@ import java.util.Scanner;
 
 public class main {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
 	// write your code here
        // PersonCaretaker p1 = new PersonCaretaker();
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("What is the name of your file? ");
         String fileName = scanner.nextLine();
-        System.out.println("Please type in name of binary file" + new PersonCaretaker(fileName));
+        System.out.println("Please type in name of binary file");
+        PersonCaretaker caretaker = new PersonCaretaker(fileName);
 
-
-        String input = "n";
-        Person person = new Person();
+        int input = 2;
+        PersonMemento memento = null;
         System.out.println("prompting you for persons:");
 
-        while(!input.equalsIgnoreCase("Y")) {
+        while(input != 1) {
             System.out.print("Enter the persons last name: ");
-            input = scanner.nextLine();
-            System.out.println("Enter the persons first name: ");
-            input = scanner.nextLine();
+            String fname = scanner.nextLine();
+            System.out.print("Enter the persons first name: ");
+            String lname = scanner.nextLine();
+            Person person = new Person(lname, fname);
+            memento = new PersonMemento(person);
+            System.out.println("0:\tBLACK\n1:\tBLONDE\n2:\tRED\n3:\tAUBURN\n4:\tSALT_AND_PEPPER\n5:\tGREY" +
+                    "\n6:\tWHITE\n7:\tBALD");
 
+
+            System.out.print("Please enter the # corresponding to the hair color: ");
+            person.setHairColor(Person.HairColor.getColor(scanner.nextInt()));
+
+            System.out.println("You entered color: " + person.getHairColor());
+            System.out.print("Person's height in feet and inches: ");
+            person.setHeight(scanner.nextInt(), scanner.nextInt());
+
+            System.out.print("Their weight in pounds: ");
+            person.setWeight(scanner.nextInt());
+
+            person.toString();
+
+            System.out.println("Are we done here? 1 for yes 2 for no ");
+            input = scanner.nextInt();
+            scanner.nextLine();
         }
+
+            //PART 2 OF OUTPUT
+            System.out.println("Skinniest version");
+
+
+            caretaker.addPersonMemento(memento);
+            caretaker.getMemento();
+            System.out.println(memento.getSavedPerson());
+
+
 
 
     }

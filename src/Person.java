@@ -1,5 +1,6 @@
+import java.io.Serializable;
 
-public class Person {
+public class Person implements Serializable {
 
     /**
      * Demonstration class that we will preserve into an instance of Memento.
