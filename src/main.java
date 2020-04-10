@@ -21,16 +21,17 @@ public class main {
         PersonCaretaker caretaker = new PersonCaretaker(fileName);
 
         int input = 2;
-        PersonMemento memento = null;
         System.out.println("prompting you for persons:");
+        System.out.print("Enter the persons last name: ");
+        String fname = scanner.nextLine();
+        System.out.print("Enter the persons first name: ");
+        String lname = scanner.nextLine();
+
+        Person person = new Person(lname, fname);
+        //PersonMemento memento  = new PersonMemento(person);
 
         while(input != 1) {
-            System.out.print("Enter the persons last name: ");
-            String fname = scanner.nextLine();
-            System.out.print("Enter the persons first name: ");
-            String lname = scanner.nextLine();
-            Person person = new Person(lname, fname);
-            memento = new PersonMemento(person);
+
             System.out.println("0:\tBLACK\n1:\tBLONDE\n2:\tRED\n3:\tAUBURN\n4:\tSALT_AND_PEPPER\n5:\tGREY" +
                     "\n6:\tWHITE\n7:\tBALD");
 
@@ -45,7 +46,8 @@ public class main {
             System.out.print("Their weight in pounds: ");
             person.setWeight(scanner.nextInt());
 
-            person.toString();
+            System.out.println(person.toString());
+            caretaker.addPersonMemento(new PersonMemento(person));
 
             System.out.println("Are we done here? 1 for yes 2 for no ");
             input = scanner.nextInt();
@@ -56,9 +58,7 @@ public class main {
             System.out.println("Skinniest version");
 
 
-            caretaker.addPersonMemento(memento);
-            caretaker.getMemento();
-            System.out.println(memento.getSavedPerson());
+            System.out.println(caretaker.getMemento().getSavedPerson());
 
 
 

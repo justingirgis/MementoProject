@@ -161,9 +161,8 @@ public class Person implements Serializable {
      * That has the same state of instance stored in PersonMemento
      * @param archive
      */
-    public void restore(PersonMemento archive){
-        person = archive.getSavedPerson();
-
+    public Person restore(PersonMemento archive){
+        return archive.getSavedPerson();
     }
 
     /**

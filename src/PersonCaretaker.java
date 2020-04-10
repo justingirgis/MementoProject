@@ -50,18 +50,22 @@ public class PersonCaretaker implements Serializable {
         //try and catch to know when cursor is at the end of file
         PersonMemento find = null;
         PersonMemento temp = (PersonMemento) objectInputStream.readObject();
-        int minWeight = temp.getSavedPerson().getWeightPounds();
+        Person person = temp.getSavedPerson().restore(temp);
+        int minWeight = person.getWeightPounds();
 
 
             try {
-                while(objectInputStream.readObject() != null) {
+                do {
                     find = (PersonMemento) objectInputStream.readObject();
+                    person = find.getSavedPerson().restore(temp);
                     //temp = find.getSavedPerson();
-                    if(find.getSavedPerson().getWeightPounds() < minWeight) {
+                    System.out.println("check");
+                    if(person.getWeightPounds() < minWeight) {
                         minWeight = find.getSavedPerson().getWeightPounds();
                         temp = find;
                     }
-                }
+                } while(find != null);
+
                 objectInputStream.close();
             }
             catch (IOException e){
