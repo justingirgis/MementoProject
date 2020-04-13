@@ -29,7 +29,6 @@ public class Person implements Serializable {
     /** Minimum believable weight in pounds.*/
     private static final int minWeight = 20;
     /** String of person*/
-    private Person person;
 
 
     public enum HairColor {
@@ -73,15 +72,11 @@ public class Person implements Serializable {
     public Person (String lName, String fName) {
         this.lName = lName;
         this.fName = fName;
-        this.hairColor = HairColor.BALD;
     }
 
-    public String getlName () {
-        return this.lName;
-    }
-
-    public String getfName () {
-        return this.fName;
+    public Person(Person person) {
+        this(person.lName, person.fName, person.hairColor, person.getHeightFeet(),
+                person.getHeightInches()%12, person.getWeightPounds());
     }
 
     /**
@@ -153,7 +148,7 @@ public class Person implements Serializable {
      * @return a new instance of person and save it to the memento
      */
     public PersonMemento save(){
-        return new PersonMemento(this.person);
+        return new PersonMemento(this);
     }
 
     /**
@@ -162,6 +157,10 @@ public class Person implements Serializable {
      * @param archive
      */
     public Person restore(PersonMemento archive){
+        Person archived = archive.getSavedPerson();
+        this.setHeight(archived.getHeightInches()/Person.inchesPerFoot, archived.getHeightInches()%Person.inchesPerFoot);
+        archived.setHairColor(archived.getHairColor());
+        this.setWeight(archived.getWeightPounds());
         return archive.getSavedPerson();
     }
 

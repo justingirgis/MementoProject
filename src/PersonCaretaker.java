@@ -45,22 +45,24 @@ public class PersonCaretaker implements Serializable {
 
 
    public PersonMemento getMemento() throws IOException, ClassNotFoundException {
+       this.objectOutputStream.close();
+       this.fileOutput.close();
+       PersonMemento temp = null;
 
-       ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(fileName));
+       try {
+        this.objectInputStream = new ObjectInputStream(new FileInputStream(fileName));
         //try and catch to know when cursor is at the end of file
         PersonMemento find = null;
-        PersonMemento temp = (PersonMemento) objectInputStream.readObject();
-        Person person = temp.getSavedPerson().restore(temp);
-        int minWeight = person.getWeightPounds();
+        temp = (PersonMemento) objectInputStream.readObject();
+        //Person person = temp.getSavedPerson().restore(temp);
+        int minWeight = temp.getSavedPerson().getWeightPounds();
+        System.out.println(minWeight);
 
-
-            try {
                 do {
+                    System.out.println("running");
                     find = (PersonMemento) objectInputStream.readObject();
-                    person = find.getSavedPerson().restore(temp);
                     //temp = find.getSavedPerson();
-                    System.out.println("check");
-                    if(person.getWeightPounds() < minWeight) {
+                    if(find.getSavedPerson().getWeightPounds() < minWeight) {
                         minWeight = find.getSavedPerson().getWeightPounds();
                         temp = find;
                     }
@@ -69,11 +71,15 @@ public class PersonCaretaker implements Serializable {
                 objectInputStream.close();
             }
             catch (IOException e){
-                e.getMessage();
+                //e.getMessage();
+            }
+            catch (ClassNotFoundException f) {
+                //f.getMessage();
             }
 
-        objectInputStream = new ObjectInputStream(new FileInputStream(fileName));
-        //objectInputStream.close();
+
+        //this.objectInputStream = new ObjectInputStream(new FileInputStream(fileName));
+
         return temp;
     }
 
@@ -85,28 +91,32 @@ public class PersonCaretaker implements Serializable {
      * @throws IOException
      */
 
-    public PersonMemento getMemento(int weight) throws IOException, ClassNotFoundException {
+    public PersonMemento getMemento(int weight) {
 
+        PersonMemento firstPerson = null;
 
-        PersonMemento firstPerson = (PersonMemento) objectInputStream.readObject();
 
         try {
-            while (objectInputStream.readObject() != null) {
-                ObjectInputStream input = new ObjectInputStream(new FileInputStream(fileName + ".bin"));
-                firstPerson = (PersonMemento) input.readObject();
-                if(firstPerson.getSavedPerson().getWeightPounds() == weight){
-                    return firstPerson;
-                }else{
-                    return null;
+            objectOutputStream.close();
+            fileOutput.close();
+            objectInputStream = new ObjectInputStream(new FileInputStream(fileName));
+            PersonMemento temp = null;
+            do {
+                temp = (PersonMemento) objectInputStream.readObject();
+                Person person = temp.getSavedPerson().restore(temp);
+                if(person.getWeightPounds() == weight){
+                    //found = true;
+                    firstPerson = temp;
+                    System.out.println("check");
                 }
-            }
+
+            } while (temp != null);
         }catch (IOException io){
             io.getMessage();
         }catch (ClassNotFoundException classNotFound){
             classNotFound.getException();
         }
         return firstPerson;
-
     }
 
 

@@ -12,7 +12,8 @@ public class PersonMemento implements Serializable {
 
 
     public PersonMemento(Person person){
-        this.person = person;
+        //this.person = person;
+        this.person = new Person(person);
     }
     public Person getSavedPerson(){
         //getSavedPerson(person);
